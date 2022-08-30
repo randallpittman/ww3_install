@@ -28,7 +28,7 @@ RUN mkdir -p /root/libs /root/ww3
 #  === install netcdf libraries ===
 # =================================
 #
-ADD https://raw.githubusercontent.com/dspelaez/install-netcdf-fortran/master/install_netcdf.sh /root/libs
+ADD https://raw.githubusercontent.com/randallpittman/ww3_install/master/container/install_netcdf.sh
 WORKDIR /root/libs
 RUN chmod 755 ./install_netcdf.sh && \
     CC=gcc FC=gfortran MAINDIR=/usr/local/netcdf ./install_netcdf.sh && \
