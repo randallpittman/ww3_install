@@ -11,14 +11,14 @@ set -e
 # ============================================================================
 #  Installation of NetCDF4 Fortran libraries
 # ----------------------------------------------------------------------------
-#  
+#
 #  Purpose:
 #    This script get the given versions of the NetCD4 libreries and its
 #    dependencies and install them in the MAINDIR=/usr/local/netcdf/ directory
-# 
+#
 #  Usage:
 #    [sudo] CC=gcc FC=gfortran MAINDIR=/usr/local/netcdf ./install_netcdf.sh
-# 
+#
 #  Autor:
 #    Daniel Santiago
 #    github/dspelaez
@@ -34,17 +34,18 @@ F77=${FC}
 # main directory
 MAINDIR=${MAINDIR:-/usr/local/netcdf}
 
+# FUTURE: Probably don't need to compile curl--Ubuntu version should be OK...
 # version of libs
 CLTAG="7.61.0"
-ZLTAG="1.2.12"
-H5TAG="1.13.2"
-NCTAG="4.9.0"
-NFTAG="4.6.0"
+ZLTAG="1.2.10"
+H5TAG="1.10.1"
+NCTAG="4.6.1"
+NFTAG="4.4.4"
 
 ## donwload source code of depencies
 wget -nc -nv https://curl.haxx.se/download/curl-$CLTAG.tar.gz
 wget -nc -nv https://zlib.net/fossils/zlib-$ZLTAG.tar.gz
-wget -nc -nv https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-$H5TAG/src/hdf5-$H5TAG.tar 
+wget -nc -nv https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-$H5TAG/src/hdf5-$H5TAG.tar
 wget -nc -nv ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-$NCTAG.tar.gz
 wget -nc -nv ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-$NFTAG.tar.gz
 
@@ -63,7 +64,7 @@ cd ..
 rm -rf curl-$CLTAG
 
 
-## zlib 
+## zlib
 tar -xf zlib-$ZLTAG.tar.gz
 cd zlib-$ZLTAG/
 ZDIR=$MAINDIR
