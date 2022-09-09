@@ -20,7 +20,7 @@ From: ubuntu:20.04
 
 %files
     install_netcdf_wwiii.sh /root/install_netcdf_wwiii.sh
-    install_metis.sh /root/install_metis.sh
+    # install_metis.sh /root/install_metis.sh
 
 %post
     # install dependencies
@@ -30,14 +30,15 @@ From: ubuntu:20.04
                         gcc gfortran g++ \
                         curl libcurl4-gnutls-dev wget \
                         git tar vim \
-                        libopenmpi-dev
+                        libopenmpi-dev \
+                        libmetis-dev libparmetis-dev
 
     # set environmental variables
     export TERM=xterm
     export NCDIR=/usr/local/netcdf
     export NETCDF=$NCDIR
     export NETCDF_CONFIG=/usr/local/netcdf/bin/nf-config
-    export METIS=/usr/local/metis
+    # export METIS=/usr/local/metis
 
     # =================================
     #  === install netcdf libraries ===
@@ -47,21 +48,22 @@ From: ubuntu:20.04
     chmod 755 ./install_netcdf_wwiii.sh
     ./install_netcdf_wwiii.sh
     export LD_LIBRARY_PATH=${NETCDF}:$LD_LIBRARY_PATH
-    echo "export LD_LIBRARY_PATH=${NETCDF}/lib:'$LD_LIBRARY_PATH'" >> $APPTAINER_ENVIRONMENT
+    echo export LD_LIBRARY_PATH=${NETCDF}/lib:'$LD_LIBRARY_PATH' >> $APPTAINER_ENVIRONMENT
     export PATH=${NETCDF}/bin:$PATH
-    echo "export PATH=${NETCDF}/bin:'$PATH'" >> $APPTAINER_ENVIRONMENT
+    echo export PATH=${NETCDF}/bin:'$PATH' >> $APPTAINER_ENVIRONMENT
     export CPATH=${NETCDF}/include:$CPATH
-    echo "export CPATH=${NETCDF}/include:'$CPATH'" >> $APPTAINER_ENVIRONMENT
+    echo export CPATH=${NETCDF}/include:'$CPATH' >> $APPTAINER_ENVIRONMENT
 
-    # =================================
-    #  === install METIS libraries ===
-    # =================================
-    #
-    chmod 755 ./install_metis.sh
-    ./install_metis.sh
-    export LD_LIBRARY_PATH=${METIS}/lib:$LD_LIBRARY_PATH
-    echo "export LD_LIBRARY_PATH=${METIS}/lib:'$LD_LIBRARY_PATH'" >> $APPTAINER_ENVIRONMENT
-    export PATH=${METIS}/bin:$PATH
-    echo "export PATH=${METIS}/bin:'$PATH'" >> $APPTAINER_ENVIRONMENT
-    export CPATH=${METIS}/include:$CPATH
-    echo "export CPATH=${METIS}/include:'$CPATH'" >> $APPTAINER_ENVIRONMENT
+    # Nope - use packaged version instead
+    # # =================================
+    # #  === install METIS libraries ===
+    # # =================================
+    # #
+    # chmod 755 ./install_metis.sh
+    # ./install_metis.sh
+    # export LD_LIBRARY_PATH=${METIS}/lib:$LD_LIBRARY_PATH
+    # echo export LD_LIBRARY_PATH=${METIS}/lib:'$LD_LIBRARY_PATH' >> $APPTAINER_ENVIRONMENT
+    # export PATH=${METIS}/bin:$PATH
+    # echo export PATH=${METIS}/bin:'$PATH' >> $APPTAINER_ENVIRONMENT
+    # export CPATH=${METIS}/include:$CPATH
+    # echo export CPATH=${METIS}/include:'$CPATH' >> $APPTAINER_ENVIRONMENT

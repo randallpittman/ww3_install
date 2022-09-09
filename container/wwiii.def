@@ -1,0 +1,86 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%labels
+    Authors: Daniel Santiago <@dspelaez>, Randall Pittman <@randallpittman>
+
+# =========================
+# === preration of data ===
+# =========================
+
+# set home variable
+%environment
+    export TERM=xterm
+    export NCDIR=/usr/local/netcdf
+    export WWATCH3_NETCDF=NC4
+    export NETCDF_CONFIG=/usr/local/netcdf/bin/nf-config
+
+%setup
+    wget https://raw.githubusercontent.com/randallpittman/ww3_install/master/container/switch
+
+%files
+    switch /root/switch
+
+%post
+    # install dependencies
+    apt-get update
+    apt-get -yq install build-essential m4 \
+                        gcc gfortran g++ \
+                        curl libcurl4-gnutls-dev wget \
+                        git tar vim
+
+    # set environmental variables
+    export TERM=xterm
+    export NCDIR=/usr/local/netcdf
+    export WWATCH3_NETCDF=NC4
+    export NETCDF_CONFIG=/usr/local/netcdf/bin/nf-config
+
+    # create folders to put libs and ww3 source in
+    mkdir -p /root/libs /root/ww3 /opt/ww3
+
+
+    # =================================
+    #  === install netcdf libraries ===
+    # =================================
+    #
+    cd /root/libs
+    wget https://raw.githubusercontent.com/randallpittman/ww3_install/master/container/install_netcdf.sh
+    chmod 755 ./install_netcdf.sh && \
+        CC=gcc FC=gfortran MAINDIR=/usr/local/netcdf ./install_netcdf.sh && \
+        export LD_LIBRARY_PATH=/usr/local/netcdf/lib:$LD_LIBRARY_PATH && \
+        echo export LD_LIBRARY_PATH=/usr/local/netcdf/lib:'$LD_LIBRARY_PATH' >> /root/.bashrc
+   # TODO - Pick up here!
+
+    # ===========================================
+    # === install wavewatch iii interactively ===
+    # ===========================================
+
+    # get tar file from repository
+    cd /root/ww3
+    wget https://github.com/NOAA-EMC/WW3/releases/download/6.07/wwatch3.v6.07.tar.gz
+
+    # untar and run instalation script
+    tar -xvf wwatch3.v6.07.tar.gz && \
+        chmod 755 ./install_ww3_tar && \
+        printf "y\nL\ny\ny\nprinter\ngfortran\ngcc\n/root/ww3/model/tmp\nyes\nyes\ny\ny" > answers && \
+        ./install_ww3_tar < answers
+
+    # copy switch file
+    cp /root/switch /root/ww3/model/bin
+    cp /root/ww3/model/bin/link.Gnu /root/ww3/model/bin/link
+    cp /root/ww3/model/bin/comp.Gnu /root/ww3/model/bin/comp
+
+    # compile the entire code
+    /root/ww3/model/bin/w3_clean && \
+        /root/ww3/model/bin/w3_new   && \
+        /root/ww3/model/bin/w3_make
+
+    # delete unnecessary files
+    rm -rf /root/ww3/README_manual_reference /root/ww3/manual.*.pdf \
+               /root/ww3/arc /root/ww3/regtests /root/ww3/smc_docs \
+               /root/libs
+
+    # set working directory
+    # WORKDIR /root/ww3/model/work
+
+    # ---  end of file ---
