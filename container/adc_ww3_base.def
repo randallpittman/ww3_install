@@ -19,7 +19,7 @@ From: ubuntu:20.04
 #     wget https://raw.githubusercontent.com/randallpittman/ww3_install/master/container/switch
 
 %files
-    install_netcdf_wwiii.sh /root/install_netcdf_wwiii.sh
+    install_netcdf.sh /root/install_netcdf.sh
     # install_metis.sh /root/install_metis.sh
 
 %post
@@ -45,8 +45,8 @@ From: ubuntu:20.04
     # =================================
     #
     cd /root
-    chmod 755 ./install_netcdf_wwiii.sh
-    ./install_netcdf_wwiii.sh
+    chmod 755 ./install_netcdf.sh
+    ./install_netcdf.sh
     export LD_LIBRARY_PATH=${NETCDF}:$LD_LIBRARY_PATH
     echo export LD_LIBRARY_PATH=${NETCDF}/lib:'$LD_LIBRARY_PATH' >> $APPTAINER_ENVIRONMENT
     export PATH=${NETCDF}/bin:$PATH
