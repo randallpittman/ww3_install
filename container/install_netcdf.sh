@@ -197,6 +197,7 @@ export comp_mpif=mpif90
 
 export fcflags='-O3'
 export cflags='-O3 -fPIC'
+export cpp=''
 
 export ESMF_OS=Linux
 export ESMF_COMPILER=gfortran
@@ -224,10 +225,10 @@ echo "OPT_CONF : " $OPT_CONF
 export PATH=${NETCDF}/bin:${PATH}
 echo "PATH : " $PATH
 
-export LD_LIBRARY_PATH=${NETCDF}/lib:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=${NETCDF}/lib:${LD_LIBRARY_PATH-""}
 echo "LD_LIBRARY_PATH : " $LD_LIBRARY_PATH
 
-export CPATH=${NETCDF}/include:${CPATH}
+export CPATH=${NETCDF}/include:${CPATH-""}
 echo "CPATH : " $CPATH
 
 
@@ -413,7 +414,7 @@ if [ ${ncview} -eq 1 ]; then
         CPP="$comp_mpicpp" \
         CXX="$comp_mpicxx" \
         CFLAGS="$cflags" CXXFLAGS="$cflags" FCFLAGS="$fcflags" \
-        LIBS="$CLIBS -ludunits2 -lpng -lpng16" \
+        LIBS="${CLIBS-''} -ludunits2 -lpng -lpng16" \
         --x-libraries=/usr/lib64 --x-includes=/usr/include/X11 \
         >& Configure-ncview.log
     echo "make " $(basename ${PWD})
