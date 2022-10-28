@@ -1,0 +1,69 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%labels
+    Authors: Daniel Santiago <@dspelaez>, Randall Pittman <@randallpittman>
+
+# =========================
+# === preration of data ===
+# =========================
+
+# set home variable
+%environment
+    export TERM=xterm
+    export NCDIR=/usr/local/netcdf
+    export WWATCH3_NETCDF=NC4
+    export NETCDF_CONFIG=/usr/local/netcdf/bin/nf-config
+
+# %setup
+#     wget https://raw.githubusercontent.com/randallpittman/ww3_install/master/container/switch
+
+%files
+    install_netcdf.sh /root/install_netcdf.sh
+    # install_metis.sh /root/install_metis.sh
+
+%post
+    # install dependencies
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -yq install build-essential m4 \
+                        cmake \
+                        gcc gfortran g++ \
+                        curl libcurl4-gnutls-dev wget \
+                        git tar vim \
+                        libopenmpi-dev \
+                        libmetis-dev libparmetis-dev
+
+    # set environmental variables
+    export TERM=xterm
+    export NCDIR=/usr/local/netcdf
+    export NETCDF=$NCDIR
+    export NETCDF_CONFIG=/usr/local/netcdf/bin/nf-config
+    # export METIS=/usr/local/metis
+
+    # =================================
+    #  === install netcdf libraries ===
+    # =================================
+    #
+    cd /root
+    chmod 755 ./install_netcdf.sh
+    ./install_netcdf.sh
+    export LD_LIBRARY_PATH=${NETCDF}:$LD_LIBRARY_PATH
+    echo export LD_LIBRARY_PATH=${NETCDF}/lib:'$LD_LIBRARY_PATH' >> $APPTAINER_ENVIRONMENT
+    export PATH=${NETCDF}/bin:$PATH
+    echo export PATH=${NETCDF}/bin:'$PATH' >> $APPTAINER_ENVIRONMENT
+    export CPATH=${NETCDF}/include:$CPATH
+    echo export CPATH=${NETCDF}/include:'$CPATH' >> $APPTAINER_ENVIRONMENT
+
+    # Nope - use packaged version instead
+    # # =================================
+    # #  === install METIS libraries ===
+    # # =================================
+    # #
+    # chmod 755 ./install_metis.sh
+    # ./install_metis.sh
+    # export LD_LIBRARY_PATH=${METIS}/lib:$LD_LIBRARY_PATH
+    # echo export LD_LIBRARY_PATH=${METIS}/lib:'$LD_LIBRARY_PATH' >> $APPTAINER_ENVIRONMENT
+    # export PATH=${METIS}/bin:$PATH
+    # echo export PATH=${METIS}/bin:'$PATH' >> $APPTAINER_ENVIRONMENT
+    # export CPATH=${METIS}/include:$CPATH
+    # echo export CPATH=${METIS}/include:'$CPATH' >> $APPTAINER_ENVIRONMENT
