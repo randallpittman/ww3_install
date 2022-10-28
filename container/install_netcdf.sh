@@ -470,7 +470,7 @@ if [ ${cdo} -eq 1 ]; then
     cd eccodes-*
     SRCDIR=$(basename ${PWD})
     echo "configure $SRCDIR"
-    mkdir build
+    rm -rf build && mkdir build
     cd build
     # cmake -DNetCDF_INCLUDE_DIRS=${NETCDF}/include/netcdf.inc \
     #       -DNetCDF_LIBRARIES=${NETCDF}/lib/libnetcdf.so \
