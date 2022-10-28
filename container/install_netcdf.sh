@@ -15,16 +15,15 @@ set -u  # error if using unknown variable!
 #                                                                      #
 ## Section 1 - input arguments                                         #
 ## Section 2 - download from website                                   #
-## Section 3 - download from ftp (removed)                             #
-## Section 4 - extract tar to src                                      #
-## Section 5 - initialize compiler environment                         #
-## Section 6 - initialize environment variables                        #
-## Section 7 - netcdf libraries installation                           #
-## Section 8 - nco installation                                        #
-## Section 9 - ncview installation                                     #
-## Section 10 - cdo installation                                       #
-## Section 11 - cdl installation                                       #
-## Section 12 - successfull exit message                               #
+## Section 3 - extract tar to src                                      #
+## Section 4 - initialize compiler environment                         #
+## Section 5 - initialize environment variables                        #
+## Section 6 - netcdf libraries installation                           #
+## Section 7 - nco installation                                        #
+## Section 8 - ncview installation                                     #
+## Section 9 - cdo installation                                       #
+## Section 10 - cdl installation                                       #
+## Section 11 - successfull exit message                               #
 # -------------------------------------------------------------------- #
 
 
@@ -35,8 +34,6 @@ compiler=GNU
 
 # enable or disable download sources from each provider website
 website=1
-# # enable or disable download sources from ifremer ftp
-# ftp=0
 # extract the sources
 extract=1
 # install the netcdf libraries
@@ -144,7 +141,7 @@ if [ ${website} -eq 1 ]; then
 fi
 
 ####################################################################################################
-## Section 4 - extract tar to src
+## Section 3 - extract tar to src
 
 if [ ${extract} -eq 1 ]; then
 
@@ -184,7 +181,7 @@ if [ ${extract} -eq 1 ]; then
 fi
 
 ####################################################################################################
-## Section 5 - initialize compiler environment
+## Section 4 - initialize compiler environment
 
 
 export comp_c=gcc
@@ -207,7 +204,7 @@ export ESMF_OPENMP=OFF
 
 
 ####################################################################################################
-## Section 6 - initialize environment variables
+## Section 5 - initialize environment variables
 
 rm -rf ${NETCDF}/bin ${NETCDF}/sbin ${NETCDF}/include ${NETCDF}/lib
 mkdir -p ${NETCDF}/include ${NETCDF}/lib ${NETCDF}/bin
@@ -235,7 +232,7 @@ echo "CPATH : " $CPATH
 
 
 ####################################################################################################
-## Section 7 - netcdf libraries installation
+## Section 6 - netcdf libraries installation
 
 cd $NETCDF/src
 
@@ -329,7 +326,7 @@ fi
 
 
 ####################################################################################################
-## Section 8 - nco installation
+## Section 7 - nco installation
 
 if [ ${nco} -eq 1 ]; then
 
@@ -401,7 +398,7 @@ fi
 
 
 ####################################################################################################
-## Section 9 - ncview installation
+## Section 8 - ncview installation
 
 if [ ${ncview} -eq 1 ]; then
 
@@ -426,7 +423,7 @@ if [ ${ncview} -eq 1 ]; then
 fi
 
 ####################################################################################################
-## Section 10 - cdo installation
+## Section 9 - cdo installation
 
 if [ ${cdo} -eq 1 ]; then
 
@@ -508,7 +505,7 @@ if [ ${cdo} -eq 1 ]; then
 fi
 
 ####################################################################################################
-## Section 11 - cdl installation
+## Section 10 - cdl installation
 
 if [ ${cdl} -eq 1 ]; then
 
@@ -537,7 +534,7 @@ if [ ${cdl} -eq 1 ]; then
 fi
 
 ####################################################################################################
-## Section 12 - successfull exit message
+## Section 11 - successfull exit message
 
 echo ''
 echo 'INSTALLATION CORRECTLY DONE'
