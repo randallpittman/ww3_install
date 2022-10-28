@@ -433,6 +433,8 @@ if [ ${cdo} -eq 1 ]; then
 
     # JASPER INSTALLATION
     cd jasper-*
+    SRCDIR=$(basename ${PWD})
+    echo "configure $SRCDIR"
     # cmake -G "Unix Makefiles" -H$PWD -B$PWD/build \
     #       -DJPEG_INCLUDE_DIR=${NETCDF}/include \
     #       -DJPEG_LIBRARY=${NETCDF}/lib/libjpeg.so \
@@ -442,7 +444,9 @@ if [ ${cdo} -eq 1 ]; then
           -DCMAKE_INSTALL_PREFIX=${NETCDF} \
         >& Configure-jasper.log
     cd build
+    echo "make $SRCDIR"
     make clean all >& Clean-jasper.log
+    echo "install $SRCDIR"
     make install >& Install-jasper.log
     cd ../..
     if [ -d ${NETCDF}/lib64 ]; then
@@ -455,6 +459,8 @@ if [ ${cdo} -eq 1 ]; then
 
     # ECCODES INSTALLATION
     cd eccodes-*
+    SRCDIR=$(basename ${PWD})
+    echo "configure $SRCDIR"
     mkdir build
     cd build
     # cmake -DNetCDF_INCLUDE_DIRS=${NETCDF}/include/netcdf.inc \
@@ -469,7 +475,9 @@ if [ ${cdo} -eq 1 ]; then
           -DCMAKE_INSTALL_PREFIX=${NETCDF} \
           -DENABLE_NETCDF=ON \
             ../ >& Configure-eccodes.log
+    echo "make $SRCDIR"
     make >& Compile-eccodes.log
+    echo "install $SRCDIR"
     make install >& Install-eccodes.log
     #pip install --install-option="--prefix=${NETCDF}" eccodes-python >& PipInstall-eccodes.log
     cd ../..
@@ -480,6 +488,8 @@ if [ ${cdo} -eq 1 ]; then
 
 # CDO INSTALLATION
     cd cdo-*
+    SRCDIR=$(basename ${PWD})
+    echo "configure $SRCDIR"
     if [ "${compiler}" == "MPT" ]; then CLIBS="$CLIBS -L$MPI_ROOT/lib -lmpi -lmpi++abi1002 -lsma"; fi
     #                if [ "${compiler}" == "PGI" ]; then CLIBS="$CLIBS -L$MPI_ROOT/lib -lmpi -lmpi_cxx -lnuma -loshmem"; fi
     ./configure  $OPT_CONF \
@@ -499,9 +509,9 @@ if [ ${cdo} -eq 1 ]; then
         --with-threads=yes \
         --disable-openmp \
         >& Configure-cdo.log
-    echo "make " $(basename ${PWD})
+    echo "make $SRCDIR"
     make -j 24 >& Compile-cdo.log
-    echo "make install " $(basename ${PWD})
+    echo "make install $SRCDIR"
     make install >& Install-cdo.log
     cd ..
 fi
