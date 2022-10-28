@@ -1,5 +1,5 @@
 #!/bin/bash -e
-
+set -u  # error if using unknown variable!
 # -------------------------------------------------------------------- #
 # Netcdf and utilities installation script                             #
 #                                                                      #
