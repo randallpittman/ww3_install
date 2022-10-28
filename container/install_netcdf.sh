@@ -58,6 +58,11 @@ apt -y install \
     zlib1g zlib1g-dev antlr libantlr-dev gsl-bin libgsl-dev libpng-dev openssl libssl-dev libjpeg9-dev \
     libaec-dev libxml2-dev python3 python3-distutils python3-numpy
 
+if [ $ncview -eq 1 ]; then
+    # NCView requires XWindows which adds quite a bit of other deps
+    apt -y install xserver-xorg-dev libxaw7-dev
+fi
+
 # SW Versions
 FLEXVER=2.6.4
 HDF5VER=1.10.5
