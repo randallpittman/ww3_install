@@ -59,7 +59,21 @@ cd $NETCDF
 apt -y install \
     cmake libexpat1 libexpat1-dev libudunits2-dev libudunits2-data libudunits2-0 curl libcurl4-gnutls-dev \
     zlib1g zlib1g-dev antlr libantlr-dev gsl-bin libgsl-dev libpng-dev openssl libssl-dev libjpeg9-dev \
-    python3 python3-distutils python3-numpy
+
+# SW Versions
+FLEXVER=2.6.4
+HDF5VER=1.10.5
+NCVER=4.9.0
+NFVER=4.6.0
+NCOVER=4.8.1
+ESMFVER=8.3.0
+NCVIEWVER=2.1.8
+JASPERVER=2.0.14
+ECCODESVER=2.27.0
+G2CVER=1.7.0
+CDOVER=1.9.5
+NCLVER=6.6.2
+
 
 if [ ${website} -eq 1 ]; then
     rm -rf TAR
@@ -71,7 +85,7 @@ if [ ${website} -eq 1 ]; then
     #     libexpat1 libexpat1-dev \
     #     libudunits2-dev libudunits2-data libudunits2-0
     wget \
-        https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
+        https://github.com/westes/flex/releases/download/v$FLEXVER/flex-$FLEXVER.tar.gz
 
     # hdf5 curl zlib sources can be downloaded here :
     # ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/
@@ -79,28 +93,27 @@ if [ ${website} -eq 1 ]; then
     #     curl libcurl4-gnutls-dev \
     #     zlib1g zlib1g-dev
     wget \
-        https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.tar.gz
+        https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5VER%.*}/hdf5-$HDF5VER/src/hdf5-$HDF5VER.tar.gz
 
     # netcdf c and fortran sources can be downloaded here :
     # https://www.unidata.ucar.edu/downloads/netcdf/index.jsp
     # examples :
-    wget \
-        ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-4.7.3.tar.gz \
-        ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-4.5.2.tar.gz
+    wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v$NCVER.tar.gz -O netcdf-c-$NCVER.tar.gz
+    wget https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v$NFVER.tar.gz -O netcdf-fortran-$NFVER.tar.gz
 
     # nco netCDF Operator can be downloaded here :
     # http://nco.sourceforge.net
     # https://github.com/nco/nco/archive/
     # apt -y install antlr libantlr-dev gsl-bin libgsl-dev
-    wget https://github.com/nco/nco/archive/4.8.1.tar.gz -O nco-4.8.1.tar.gz
+    wget https://github.com/nco/nco/archive/$NCOVER.tar.gz -O nco-$NCOVER.tar.gz
 
     # Earth System Modeling Framework
-    wget https://github.com/esmf-org/esmf/archive/refs/tags/ESMF_8_2_0.tar.gz
+    wget https://github.com/esmf-org/esmf/archive/refs/tags/v$ESMFVER.tar.gz -O esmf-$ESMFVER.tar.gz
 
     # ncview can be downloaded here :
     # http://meteora.ucsd.edu/~pierce/ncview_home_page.html
     # apt -y install libpng-dev
-    wget ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.1.8.tar.gz
+    wget ftp://cirrus.ucsd.edu/pub/ncview/ncview-$NCVIEWVER.tar.gz
 
     # openssl can be downloaded here :
     # wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
@@ -111,21 +124,21 @@ if [ ${website} -eq 1 ]; then
     # apt -y install libjpeg9-dev
 
     # jasper can be downloaded here :
-    wget https://www.ece.uvic.ca/~frodo/jasper/software/jasper-2.0.14.tar.gz
+    wget https://www.ece.uvic.ca/~frodo/jasper/software/jasper-$JASPERVER.tar.gz
 
     # eccodes can be downloaded here :
-    wget https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.16.0-Source.tar.gz
+    wget https://confluence.ecmwf.int/download/attachments/45757960/eccodes-$ECCODESVER-Source.tar.gz
 
     #  grib2 can be downloaded here :
     # wget https://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/g2clib-1.6.0.tar
-    wget https://github.com/NOAA-EMC/NCEPLIBS-g2c/archive/refs/tags/v1.7.0.tar.gz -O g2clib-1.7.0.tar.gz
+    wget https://github.com/NOAA-EMC/NCEPLIBS-g2c/archive/refs/tags/v$G2CVER.tar.gz -O g2clib-$G2CVER.tar.gz
 
     # cdo can be downloaded here :
     # https://code.mpimet.mpg.de/projects/cdo/files
-    wget https://code.mpimet.mpg.de/attachments/download/18264/cdo-1.9.5.tar.gz
+    wget https://code.mpimet.mpg.de/attachments/download/18264/cdo-$CDOVER.tar.gz
 
     # ncl can be downloaded here :
-    wget https://www.earthsystemgrid.org/dataset/ncl.662.src/file/ncl_ncarg-6.6.2.tar.gz
+    wget https://www.earthsystemgrid.org/dataset/ncl.662.src/file/ncl_ncarg-$NCLVER.tar.gz
 
     cd -
 fi
@@ -142,30 +155,30 @@ if [ ${extract} -eq 1 ]; then
 
     echo "extract tar files"
     # netcdf
-    tar -xf ../TAR/flex-2*.tar.gz
+    tar -xf ../TAR/flex-$FLEXVER.tar.gz
     # tar xf ../TAR/libexpat-2*.tar.gz
     # tar xf ../TAR/udunits-2*.tar.gz
     # tar xf ../TAR/zlib-1.*.tar.gz
-    tar -xf ../TAR/hdf5-1.10.*.tar.gz
-    tar -xf ../TAR/netcdf-c-4*.tar.gz
-    tar -xf ../TAR/netcdf-fortran-*.tar.gz
+    tar -xf ../TAR/hdf5-$HDF5VER.tar.gz
+    tar -xf ../TAR/netcdf-c-$NCVER.tar.gz
+    tar -xf ../TAR/netcdf-fortran-$NFVER.tar.gz
     # tar xf ../TAR/openssl-1.1.1d.tar.gz
     # tar xf ../TAR/curl-7.*.tar.gz
     # nco
     # tar xf ../TAR/antlr-2*.tar.gz
     # tar xf ../TAR/gsl-2*.tar.gz
-    tar -xf ../TAR/ESMF_8_2*.tar.gz && mv esmf-ESMF_8_2_0 esmf-8.2.0
-    tar -xf ../TAR/nco-4.8*.tar.gz
+    tar -xf ../TAR/esmf-$ESMFVER.tar.gz
+    tar -xf ../TAR/nco-$NCOVER.tar.gz
     # ncview
     # tar xf ../TAR/libpng-1*.tar.gz
-    tar -xf ../TAR/ncview-2*.tar.gz
+    tar -xf ../TAR/ncview-$NCVIEWVER.tar.gz
     # cdo and ncl
     # tar xf ../TAR/jpegsrc.v9d.tar.gz
-    tar -xf ../TAR/jasper-2.0.14.tar.gz
-    tar -xf ../TAR/eccodes-2.16.0-Source.tar.gz
-    tar -xf ../TAR/g2clib-1.7.0.tar.gz
-    tar -xf ../TAR/cdo-1.9*.tar.gz
-    tar -xf ../TAR/ncl_ncarg-6.6.2.tar.gz
+    tar -xf ../TAR/jasper-$JASPERVER.tar.gz
+    tar -xf ../TAR/eccodes-$ECCODESVER-Source.tar.gz
+    tar -xf ../TAR/g2clib-$G2CVER.tar.gz
+    tar -xf ../TAR/cdo-$CDOVER.tar.gz
+    tar -xf ../TAR/ncl_ncarg-$NCLVER.tar.gz
 
     cd -
 fi
@@ -270,7 +283,7 @@ if [ ${netcdf} -eq 1 ]; then
 
     # NETCDF C INSTALLATION
     #                   --enable-logging \
-    cd netcdf-c-4*
+    cd netcdf-c-*
     echo "configure " $(basename ${PWD})
     if [ "${compiler}" == "PGI" ]; then fpic='-fPIC'; else fpic=''; fi
     ./configure  $OPT_CONF \
@@ -420,8 +433,7 @@ if [ ${cdo} -eq 1 ]; then
     # module load cmake # for jasper and eccodes
 
     # JASPER INSTALLATION
-    cd jasper-2.0*
-    echo "configure " $(basename ${PWD})
+    cd jasper-*
     # cmake -G "Unix Makefiles" -H$PWD -B$PWD/build \
     #       -DJPEG_INCLUDE_DIR=${NETCDF}/include \
     #       -DJPEG_LIBRARY=${NETCDF}/lib/libjpeg.so \
@@ -443,8 +455,7 @@ if [ ${cdo} -eq 1 ]; then
     # module load conda/4.7.12
 
     # ECCODES INSTALLATION
-    cd eccodes-2.16.0-Source
-    echo "configure " $(basename ${PWD})
+    cd eccodes-*
     mkdir build
     cd build
     # cmake -DNetCDF_INCLUDE_DIRS=${NETCDF}/include/netcdf.inc \
@@ -469,8 +480,7 @@ if [ ${cdo} -eq 1 ]; then
 # module unload cmake # for jasper and eccodes
 
 # CDO INSTALLATION
-    cd cdo-1.9*
-    echo "configure " $(basename ${PWD})
+    cd cdo-*
     if [ "${compiler}" == "MPT" ]; then CLIBS="$CLIBS -L$MPI_ROOT/lib -lmpi -lmpi++abi1002 -lsma"; fi
     #                if [ "${compiler}" == "PGI" ]; then CLIBS="$CLIBS -L$MPI_ROOT/lib -lmpi -lmpi_cxx -lnuma -loshmem"; fi
     ./configure  $OPT_CONF \
