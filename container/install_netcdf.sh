@@ -56,6 +56,7 @@ cd $NETCDF
 apt -y install \
     cmake libexpat1 libexpat1-dev libudunits2-dev libudunits2-data libudunits2-0 curl libcurl4-gnutls-dev \
     zlib1g zlib1g-dev antlr libantlr-dev gsl-bin libgsl-dev libpng-dev openssl libssl-dev libjpeg9-dev \
+    libaec-dev libxml2-dev python3 python3-distutils python3-numpy
 
 # SW Versions
 FLEXVER=2.6.4
