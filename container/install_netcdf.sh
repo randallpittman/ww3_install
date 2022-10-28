@@ -208,8 +208,11 @@ export ESMF_OPENMP=OFF
 ####################################################################################################
 ## Section 5 - initialize environment variables
 
-rm -rf ${NETCDF}/bin ${NETCDF}/sbin ${NETCDF}/include ${NETCDF}/lib
-mkdir -p ${NETCDF}/include ${NETCDF}/lib ${NETCDF}/bin
+if [ $extract -eq 1 ]; then
+    # only remove built stuff if starting over (extract==1)
+    rm -rf ${NETCDF}/bin ${NETCDF}/sbin ${NETCDF}/include ${NETCDF}/lib
+    mkdir -p ${NETCDF}/include ${NETCDF}/lib ${NETCDF}/bin
+fi
 
 echo 'compiler : ' $compiler
 export comp_mpic_exe=$(echo $comp_mpic | awk -F' ' '{print $1}')
