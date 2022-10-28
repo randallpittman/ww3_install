@@ -406,7 +406,8 @@ fi
 ## Section 8 - ncview installation
 
 if [ ${ncview} -eq 1 ]; then
-
+    CLIBS=$(${NETCDF}/bin/nc-config --libs)
+    echo "CLIBS : " $CLIBS
     # NCVIEW INSTALLATION
     # MUST BE DONE ON THE FRONT-END NODE FOR X-SERVER ENABLING
     cd ncview-*
@@ -417,7 +418,7 @@ if [ ${ncview} -eq 1 ]; then
         CPP="$comp_mpicpp" \
         CXX="$comp_mpicxx" \
         CFLAGS="$cflags" CXXFLAGS="$cflags" FCFLAGS="$fcflags" \
-        LIBS="${CLIBS-''} -ludunits2 -lpng -lpng16" \
+        LIBS="$CLIBS -ludunits2 -lpng -lpng16" \
         --x-libraries=/usr/lib64 --x-includes=/usr/include/X11 \
         >& Configure-ncview.log
     echo "make " $(basename ${PWD})
